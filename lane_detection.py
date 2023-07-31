@@ -4,31 +4,30 @@ import matplotlib.pyplot as plt
 from dt_apriltags import Detector
 
 #question 1
-def detect_lines(img:str, threshold1:int = 50, threshold2:int = 150, apertureSize:int = 3, minLineLength:int = 100, maxLineGap:int = 10):
+def detect_lines(img:str, threshold1:int = 50, threshold2:int = 150, apertureSize:int = 3, minLineLength:int = 100, maxLineGap:int = 10) ->np.ndarray:
     image = cv2.imread(img)
-    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) # convert to grayscale
-    edges = cv2.Canny(gray,threshold1,threshold2, apertureSize=apertureSize) # detect edges
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    edges = cv2.Canny(gray, threshold1, threshold2, apertureSize)  # Detect edges
     lines = cv2.HoughLinesP(
-                    edges,
-                    1,
-                    np.pi/180,
-                    100,
-                    minLineLength=minLineLength,
-                    maxLineGap=maxLineGap,
-            ) # detect lines
+                edges,
+                1,
+                np.pi/180,
+                100,
+                minLineLength,
+                maxLineGap,
+        ) # detect lines
     return lines
 
 # Question 2
 def draw_lines(img:str, lines:list, color:tuple = (0, 255, 0)):
-    image = cv2.imread(img)
     
     for line in lines:
         print(line)
         x1, y1, x2, y2 = line[0]
-        cv2.line(image, (x1, y1), (x2, y2), color, 2)
+        cv2.line(img, (x1, y1), (x2, y2), color, 2)
+        cv2.putText(img, f"{x1}, {y1}, {x2}, {y2}", ((x1+x2)/2, (y1+y2)/2), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+    plt.imshow(img)
     
-    plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-    pass
 
 # Question 3
 def get_slopes_intercepts(lines: list):
