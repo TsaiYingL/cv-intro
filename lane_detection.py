@@ -27,7 +27,9 @@ def detect_lines(
     """
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    edges = cv2.Canny(gray, threshold1, threshold2, apertureSize=apertureSize)
+    kernel = np.ones((5, 5), np.float32) / 25
+    blur = cv2.filter2D(gray, -1, kernel)
+    edges = cv2.Canny(blur, threshold1, threshold2, apertureSize=apertureSize)
     lines = cv2.HoughLinesP(
         edges, 1, np.pi / 180, 100, minLineLength=minLineLength, maxLineGap=maxLineGap
     )
