@@ -27,11 +27,12 @@ def get_lane_center(img: np.ndarray, lanes: np.ndarray):
                 closest_lane = lane
     print(f"closest_lane:{closest_lane}")
     midpoint1 = [(closest_lane[0][2] + closest_lane[1][2]) / 2, 0]
-    midpoint2 = [((closest_lane[0][2] + closest_lane[0][1]) + (closest_lane[1][2] + closest_lane[1][1]))/2, 1]
-    center_slope = (midpoint1[1] - midpoint2[1]) / (midpoint1[0] - midpoint2[0])
-    center_intercept = midpoint1[0]
+    #midpoint2 = [((closest_lane[0][2] + closest_lane[0][1]) + (closest_lane[1][2] + closest_lane[1][1]))/2, 1]
+    center_slope = (closest_lane[0][1]+closest_lane[1][1])/2
+    #center_slope = (midpoint1[1] - midpoint2[1]) / (midpoint1[0] - midpoint2[0])
+    center_xintercept = midpoint1[0]
     # [[[[x1,y1,x2,y2],slope,intercept],[[x1,y1,x2,y2],slope,intercept]]]
-    center_info = [center_intercept, center_slope]
+    center_info = [center_xintercept, center_slope]
 
     return center_info
 
@@ -48,7 +49,7 @@ def recommend_direction(img: np.ndarray, center: float, slope: float):
             direction (str): left, right, forward
     """
 
-    height, width, _ = img.shape()
+    height, width, _ = img.shape
     camera_pov = width / 2
 
     if camera_pov < center and slope < 0:
