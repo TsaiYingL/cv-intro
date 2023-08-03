@@ -25,11 +25,11 @@ def detect_lines(
         Returns:
             lines (np.ndarray)
     """
-
+    img = cv2.GaussianBlur(img, (9,9), 0)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    kernel = np.ones((5, 5), np.float32) / 25
-    blur = cv2.filter2D(gray, -1, kernel)
-    edges = cv2.Canny(blur, threshold1, threshold2, apertureSize=apertureSize)
+    _,bw = cv2.threshold(gray, 80, 255, cv2.THRESH_BINARY)
+    #kernel = np.ones((5, 5), np.float32) / 25
+    edges = cv2.Canny(bw, threshold1, threshold2, apertureSize=apertureSize)
     lines = cv2.HoughLinesP(
         edges, 1, np.pi / 180, 100, minLineLength=minLineLength, maxLineGap=maxLineGap
     )
