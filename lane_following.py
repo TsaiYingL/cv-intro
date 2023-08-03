@@ -15,15 +15,14 @@ def get_lane_center(img: np.ndarray, lanes: np.ndarray):
     height, width, _ = img.shape
     center = width / 2
     min = 10000000000
-
     for lane in lanes:
         print(lane)
-        closest_lane = np.ndarray
         # [[[x1,y1,x2,y2],slope,intercept],[[x1,y1,x2,y2],slope,intercept]]
         intercepts = [lane[0][2],lane[1][2]]
         print(f"intercepts: {intercepts}")
         for i in range(0, len(intercepts) - 1):
             if abs(intercepts[i]-center) < min:
+                global closest_lane
                 min = intercepts[i]
                 closest_lane = lane
     print(f"closest_lane:{closest_lane}")

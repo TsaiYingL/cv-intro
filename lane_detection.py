@@ -63,7 +63,7 @@ def get_slopes_intercepts(lines: np.ndarray):
             intercepts (np.ndarray): The list of intercepts
     """
 
-    slopes = (lines[:, :, 3] - lines[:, :, 1]) / (lines[:, :, 1] - lines[:, :, 0])
+    slopes = (-lines[:, :, 3] + lines[:, :, 1]) / (lines[:, :, 2] - lines[:, :, 0])
     # b = y - mx
     b = lines[:, :, 1] - slopes * lines[:, :, 0]
     intercepts = (np.zeros_like(slopes) - b) / slopes
